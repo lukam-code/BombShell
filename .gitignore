@@ -14,3 +14,4 @@ public/images/izvorne/
 supabase/.env
 deno.lock
 *.zip
+hostinger.env
