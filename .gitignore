@@ -13,3 +13,4 @@ supabase/.branches
 public/images/izvorne/
 supabase/.env
 deno.lock
+*.zip
