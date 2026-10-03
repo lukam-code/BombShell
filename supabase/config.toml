@@ -1,0 +1,25 @@
+# Supabase CLI konfiguracija (deo relevantan za ovaj projekat).
+project_id = "bombshell"
+
+[api]
+schemas = ["public"]
+
+[auth]
+site_url = "http://localhost:3000"
+# Admin nalog se pravi ručno – javna registracija je isključena.
+enable_signup = false
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+# Funkcije poziva samo baza (pg_net / pg_cron) sa zaglavljem x-webhook-secret,
+# pa se JWT provera isključuje, a funkcije same proveravaju tajnu.
+[functions.send-customer-notification]
+verify_jwt = false
+
+[functions.send-email-notification]
+verify_jwt = false
+
+[functions.send-reminders]
+verify_jwt = false

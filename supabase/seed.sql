@@ -1,0 +1,3 @@
+-- Početni podaci se nalaze u migraciji 20261003000006_seed.sql, kako bi se
+-- primenili i pri `supabase db push` na produkcioni projekat.
+-- Recenzije se namerno NE seed-uju.

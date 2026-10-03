@@ -1,0 +1,45 @@
+{
+  "name": "bombshell",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "images": "node scripts/optimize-images.mjs",
+    "test:db": "bash tests/sql/run.sh",
+    "test:e2e": "node tests/e2e/booking.e2e.mjs mobile && node tests/e2e/booking.e2e.mjs desktop && node tests/e2e/admin.e2e.mjs desktop && node tests/e2e/admin.e2e.mjs mobile",
+    "test:functions": "deno test supabase/functions/_shared/"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.117.2",
+    "date-fns": "^4.4.0",
+    "date-fns-tz": "^3.2.0",
+    "framer-motion": "^12.43.0",
+    "lucide-react": "^0.544.0",
+    "next": "15.5.27",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hook-form": "^7.89.0",
+    "zod": "3.25"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.6.1",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.27",
+    "playwright-core": "^1.63.0",
+    "postcss": "^8.5.28",
+    "sharp": "^0.35.5",
+    "tailwindcss": "3.4",
+    "typescript": "5.9",
+    "vitest": "^3.2.7"
+  }
+}

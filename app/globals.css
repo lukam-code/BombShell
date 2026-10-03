@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-rose-deep ring-offset-2 ring-offset-white;
+  }
+  ::selection {
+    @apply bg-rose-light text-ink;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8;
+  }
+  .gold-line {
+    @apply h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent;
+  }
+  .placeholder-gradient {
+    background: radial-gradient(120% 120% at 0% 0%, #fff4f7 0%, #fce8ee 35%, #e8a0b4 75%, #d4789a 100%);
+  }
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:shadow-soft;
+  }
+}
+
+/* Intro animacija (≤ 1.5s): naziv fade-in + blagi scale, pa overlay nestaje */
+.intro-overlay {
+  animation: intro-out 0.35s ease-out 1.15s forwards;
+}
+.intro-mark {
+  animation: intro-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.intro-line {
+  width: 0;
+  animation: intro-line 0.6s ease-out 0.3s forwards;
+}
+@keyframes intro-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes intro-line {
+  to { width: 120px; }
+}
+@keyframes intro-out {
+  to { opacity: 0; visibility: hidden; }
+}
+html.intro-seen .intro-overlay {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-overlay {
+    display: none;
+  }
+}

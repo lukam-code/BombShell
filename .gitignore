@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+supabase/.temp
+supabase/.branches
+.DS_Store
+public/images/izvorne/
+supabase/.env
+deno.lock
