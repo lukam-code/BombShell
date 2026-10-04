@@ -20,7 +20,8 @@ export function IntroAnimation() {
   return (
     <div aria-hidden className="intro-overlay fixed inset-0 z-[90] flex items-center justify-center bg-cream">
       <div className="intro-mark text-center">
-        <p className="font-serif text-4xl font-semibold tracking-[0.25em] text-ink sm:text-6xl">BOMBSHELL</p>
+        {/* eslint-disable-next-line @next/next/no-img-element -- mora se prikazati odmah, bez čekanja JS-a */}
+        <img src="/images/logo.webp" alt="" width={600} height={494} className="mx-auto h-auto w-56 sm:w-72" />
         <span className="intro-line mx-auto mt-4 block h-px bg-gold" />
       </div>
     </div>

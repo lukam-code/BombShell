@@ -9,7 +9,7 @@ export function Footer() {
     <footer className="border-t border-rose-light bg-white">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2 lg:col-span-2">
-          <Logo />
+          <Logo imgClassName="h-28" />
           <p className="mt-5 max-w-sm font-serif text-lg italic leading-relaxed text-ink-soft">„{siteConfig.slogan}”</p>
           <SocialIcons className="mt-6" />
         </div>

@@ -1,29 +1,30 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
-export function Logo({ className, light = false, onClick }: { className?: string; light?: boolean; onClick?: () => void }) {
+/** Zlatni BOMBSHELL logo (lik u krugu + natpis). Veličinu određuje visina iz `className`. */
+export function Logo({
+  className,
+  imgClassName = "h-14 sm:h-[3.75rem]",
+  onClick,
+  priority = false,
+}: {
+  className?: string;
+  imgClassName?: string;
+  onClick?: () => void;
+  priority?: boolean;
+}) {
   return (
-    <Link
-      href="/"
-      onClick={onClick}
-      className={cn("group inline-flex flex-col leading-none", className)}
-    >
-      <span
-        className={cn(
-          "font-serif text-2xl font-semibold tracking-[0.18em] transition-colors sm:text-[1.7rem]",
-          light ? "text-white" : "text-ink",
-        )}
-      >
-        BOMBSHELL
-      </span>
-      <span
-        className={cn(
-          "mt-1 text-[0.6rem] font-medium uppercase tracking-[0.45em]",
-          light ? "text-white/90" : "text-gold-dark",
-        )}
-      >
-        Salon lepote
-      </span>
+    <Link href="/" onClick={onClick} className={cn("inline-flex shrink-0 items-center", className)}>
+      <Image
+        src="/images/logo.webp"
+        alt="BOMBSHELL – Salon lepote"
+        width={600}
+        height={494}
+        priority={priority}
+        sizes="(min-width: 640px) 160px, 120px"
+        className={cn("w-auto drop-shadow-[0_1px_2px_rgba(45,45,45,0.15)]", imgClassName)}
+      />
       <span className="sr-only">, početna strana</span>
     </Link>
   );

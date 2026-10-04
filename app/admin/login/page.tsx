@@ -1,6 +1,7 @@
 "use client";
 
 import { Lock } from "lucide-react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -69,11 +70,10 @@ export default function LoginPage() {
     <main id="sadrzaj" className="flex min-h-screen items-center justify-center bg-gradient-to-b from-rose-light to-cream px-4">
       <div className="w-full max-w-sm rounded-4xl bg-white p-8 shadow-soft">
         <div className="mb-8 text-center">
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-light text-rose-deeper">
-            <Lock className="h-6 w-6" aria-hidden />
-          </span>
-          <h1 className="mt-4 font-serif text-2xl font-semibold tracking-[0.18em]">BOMBSHELL</h1>
-          <p className="mt-1 text-sm text-ink-soft">Prijava u admin panel</p>
+          <Image src="/images/logo.webp" alt="BOMBSHELL – Salon lepote" width={600} height={494} priority className="mx-auto h-28 w-auto" />
+          <h1 className="mt-4 flex items-center justify-center gap-2 text-lg font-medium">
+            <Lock className="h-4 w-4 text-rose-deeper" aria-hidden /> Prijava u admin panel
+          </h1>
         </div>
         <Suspense>
           <LoginForm />

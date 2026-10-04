@@ -36,8 +36,8 @@ export function Navbar() {
         solid ? "border-b border-rose-light/70 bg-white/80 shadow-card backdrop-blur-lg" : "bg-transparent",
       )}
     >
-      <nav aria-label="Glavna navigacija" className="container-page flex h-[4.5rem] items-center justify-between gap-6">
-        <Logo />
+      <nav aria-label="Glavna navigacija" className="container-page flex h-20 items-center justify-between gap-6">
+        <Logo priority />
         <ul className="hidden items-center gap-7 lg:flex">
           {siteConfig.nav.map((item) => (
             <li key={item.href}>
@@ -83,7 +83,7 @@ export function Navbar() {
             exit={reduce ? { opacity: 0 } : { clipPath: "circle(0% at calc(100% - 2.5rem) 2.25rem)" }}
             transition={{ duration: reduce ? 0.15 : 0.55, ease: [0.65, 0, 0.35, 1] }}
           >
-            <div className="container-page flex h-[4.5rem] items-center justify-between">
+            <div className="container-page flex h-20 items-center justify-between">
               <Logo onClick={() => setOpen(false)} />
               <button
                 type="button"
