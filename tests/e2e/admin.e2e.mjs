@@ -66,10 +66,10 @@ await page.waitForURL(/\/admin\/login\?next=/);
 assert(true, "middleware preusmerava neulogovane na /admin/login");
 
 // pogrešna lozinka
-await page.getByLabel("Email").fill("admin@bombshell.rs");
+await page.getByLabel("Korisničko ime").fill("admin@bombshell.rs");
 await page.getByLabel("Lozinka").fill("pogresna");
 await page.getByRole("button", { name: "Prijavi se" }).click();
-await page.getByText("Pogrešan email ili lozinka.").waitFor();
+await page.getByText("Pogrešno korisničko ime ili lozinka.").waitFor();
 assert(true, "pogrešna lozinka je odbijena");
 await page.getByLabel("Lozinka").fill("Bombshell2026!");
 await page.getByRole("button", { name: "Prijavi se" }).click();

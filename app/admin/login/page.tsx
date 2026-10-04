@@ -8,6 +8,13 @@ import { Input } from "@/components/ui/Input";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { getBrowserSupabase } from "@/lib/supabase/client";
 
+// Supabase Auth koristi email; korisničko ime (npr. "Sanela") se pretvara u sanela@bomb-shell.com.
+const USERNAME_DOMAIN = "bomb-shell.com";
+function toLoginEmail(value: string) {
+  const v = value.trim().toLowerCase();
+  return v.includes("@") ? v : `${v}@${USERNAME_DOMAIN}`;
+}
+
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
@@ -22,10 +29,10 @@ function LoginForm() {
     e.preventDefault();
     setBusy(true);
     setError(null);
-    const { error: err } = await getBrowserSupabase().auth.signInWithPassword({ email: email.trim(), password });
+    const { error: err } = await getBrowserSupabase().auth.signInWithPassword({ email: toLoginEmail(email), password });
     setBusy(false);
     if (err) {
-      setError(err.message.toLowerCase().includes("invalid") ? "Pogrešan email ili lozinka." : "Prijava nije uspela. Pokušajte ponovo.");
+      setError(err.message.toLowerCase().includes("invalid") ? "Pogrešno korisničko ime ili lozinka." : "Prijava nije uspela. Pokušajte ponovo.");
       return;
     }
     const next = params.get("next");
@@ -35,7 +42,15 @@ function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4" noValidate>
-      <Input label="Email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+      <Input
+        label="Korisničko ime"
+        type="text"
+        autoComplete="username"
+        autoCapitalize="none"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
       <Input label="Lozinka" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
       {error && (
         <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-800">
