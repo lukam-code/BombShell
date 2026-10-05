@@ -9,7 +9,6 @@ import { fadeUp, Reveal, StaggerGroup } from "@/components/ui/Reveal";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { InstagramIcon } from "@/components/layout/SocialIcons";
-import { cn } from "@/lib/cn";
 import { siteConfig } from "@/lib/siteConfig";
 
 const images = siteConfig.images.gallery;
@@ -34,10 +33,8 @@ export function Gallery() {
               <button
                 type="button"
                 onClick={() => setIndex(i)}
-                className={cn(
-                  "group relative block w-full overflow-hidden rounded-2xl shadow-card",
-                  img.tall ? "aspect-[3/4]" : "aspect-square",
-                )}
+                className="group relative block w-full overflow-hidden rounded-2xl shadow-card"
+                style={{ aspectRatio: `${img.width} / ${img.height}` }}
                 aria-label={`Otvori sliku: ${img.alt}`}
               >
                 <span className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110">
@@ -147,7 +144,7 @@ function Lightbox({
             <m.div
               key={index}
               custom={dir}
-              className="relative aspect-[4/5] w-[88vw] max-w-3xl cursor-grab overflow-hidden rounded-2xl shadow-2xl active:cursor-grabbing sm:aspect-[4/3] sm:w-[80vw]"
+              className="relative h-[75vh] w-[92vw] max-w-4xl cursor-grab active:cursor-grabbing"
               initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir >= 0 ? 120 : -120, scale: 0.96 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir >= 0 ? -120 : 120, scale: 0.96 }}
@@ -158,7 +155,13 @@ function Lightbox({
               onDragEnd={onDragEnd}
               onClick={(e) => e.stopPropagation()}
             >
-              <SmartImage src={images[index].src} alt={images[index].alt} sizes="90vw" label={String(index + 1).padStart(2, "0")} />
+              <SmartImage
+                src={images[index].src}
+                alt={images[index].alt}
+                sizes="(min-width: 1024px) 900px, 92vw"
+                fit="contain"
+                label={String(index + 1).padStart(2, "0")}
+              />
             </m.div>
           </AnimatePresence>
 

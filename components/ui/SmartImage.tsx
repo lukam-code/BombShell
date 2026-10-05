@@ -12,6 +12,7 @@ export function SmartImage({
   sizes,
   priority,
   label,
+  fit = "cover",
 }: {
   src: string | null;
   alt: string;
@@ -19,9 +20,10 @@ export function SmartImage({
   sizes: string;
   priority?: boolean;
   label?: string;
+  fit?: "cover" | "contain";
 }) {
   if (src) {
-    return <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={cn("object-cover", className)} />;
+    return <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={cn(fit === "contain" ? "object-contain" : "object-cover", className)} />;
   }
   return (
     <div role="img" aria-label={alt} className={cn("placeholder-gradient absolute inset-0 overflow-hidden", className)}>

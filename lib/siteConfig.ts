@@ -95,15 +95,15 @@ export const siteConfig = {
    */
   images: {
     hero: { src: null as string | null, alt: "Enterijer salona lepote Bombshell u Novom Sadu" },
-    about: { src: null as string | null, alt: "Uređen i prijatan ambijent salona Bombshell" },
+    about: { src: "/images/galerija-pramenovi.webp" as string | null, alt: "Pramenovi urađeni u salonu Bombshell, u prijatnom roze ambijentu salona" },
+    /** Galerija: širina/visina su stvarne dimenzije slike (zadržava se format, bez sečenja). */
     gallery: [
-      { src: null as string | null, alt: "Radno mesto za frizerske usluge u salonu Bombshell", tall: true },
-      { src: null as string | null, alt: "Detalj enterijera salona Bombshell", tall: false },
-      { src: null as string | null, alt: "Negovani nokti – manikir u salonu Bombshell", tall: false },
-      { src: null as string | null, alt: "Frizura urađena u salonu Bombshell", tall: true },
-      { src: null as string | null, alt: "Kutak za negu lica i tela u salonu Bombshell", tall: false },
-      { src: null as string | null, alt: "Svilene trepavice urađene u salonu Bombshell", tall: false },
-    ],
+      { src: "/images/galerija-balayage.webp", alt: "Balayage pre i posle – topli karamel pramenovi i lokne", width: 960, height: 960 },
+      { src: "/images/galerija-french-manikir.webp", alt: "French manikir urađen u salonu Bombshell", width: 960, height: 597 },
+      { src: "/images/galerija-pramenovi.webp", alt: "Svetli pramenovi na ravnoj kosi", width: 768, height: 960 },
+      { src: "/images/galerija-gel-lak.webp", alt: "Gel lak pre i posle – roze i tirkizna boja", width: 894, height: 960 },
+      { src: "/images/galerija-blond-pramenovi.webp", alt: "Pre i posle – hladni plavi pramenovi i talasi", width: 960, height: 960 },
+    ] as Array<{ src: string | null; alt: string; width: number; height: number }>,
     ogImage: "/opengraph-image",
   },
 
