@@ -1,10 +1,11 @@
 "use client";
 
-import { CheckCircle2, History, Phone, UserX, XCircle, BadgeCheck } from "lucide-react";
+import { BadgeCheck, CheckCircle2, History, MessageCircle, MessageSquare, Phone, Send, UserX, XCircle } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { errorMessage, updateBookingStatus } from "@/lib/adminData";
+import { ADMIN_MESSAGE_TEST_RECIPIENT, buildCustomerMessage, messageLinks, type ManualMessageType } from "@/lib/customerMessages";
 import { formatPhoneLocal } from "@/lib/phone";
 import { capitalize, formatDuration, formatLongDate, formatPrice, formatTime, formatBelgrade } from "@/lib/time";
 import type { Booking, BookingStatus } from "@/lib/types";
@@ -14,16 +15,29 @@ export function BookingModal({ booking, onClose, onChanged }: { booking: Booking
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmCancel, setConfirmCancel] = useState(false);
+  // Lokalna kopija – posle potvrde/otkazivanja prozor ostaje otvoren da bi se poslala poruka
+  const [current, setCurrent] = useState<Booking | null>(booking);
+  const [justChanged, setJustChanged] = useState(false);
+
+  useEffect(() => {
+    setCurrent(booking);
+    setJustChanged(false);
+  }, [booking]);
 
   async function setStatus(status: BookingStatus) {
-    if (!booking) return;
+    if (!current) return;
     setBusy(true);
     setError(null);
     try {
-      await updateBookingStatus(booking.id, status);
+      await updateBookingStatus(current.id, status);
       onChanged();
       setConfirmCancel(false);
-      onClose();
+      if (status === "confirmed" || status === "cancelled") {
+        setCurrent({ ...current, status, cancelled_by: status === "cancelled" ? "salon" : null });
+        setJustChanged(true);
+      } else {
+        onClose();
+      }
     } catch (e) {
       setError(errorMessage(e));
     } finally {
@@ -31,7 +45,7 @@ export function BookingModal({ booking, onClose, onChanged }: { booking: Booking
     }
   }
 
-  const b = booking;
+  const b = current;
   const isPast = b ? new Date(b.start_time) < new Date() : false;
   const active = b && (b.status === "pending" || b.status === "confirmed");
 
@@ -90,6 +104,8 @@ export function BookingModal({ booking, onClose, onChanged }: { booking: Booking
             </Link>
           </div>
 
+          <NotifyCustomer booking={b} highlight={justChanged} />
+
           <ErrorNote>{error}</ErrorNote>
 
           {confirmCancel ? (
@@ -136,5 +152,79 @@ export function BookingModal({ booking, onClose, onChanged }: { booking: Booking
         </div>
       )}
     </Modal>
+  );
+}
+
+/** Slanje poruke klijentkinji sa telefona salona (SMS / Viber / WhatsApp) – bez ikakvog servisa. */
+function NotifyCustomer({ booking, highlight }: { booking: Booking; highlight: boolean }) {
+  const upcoming = new Date(booking.start_time) > new Date();
+  const defaultType: ManualMessageType = booking.status === "cancelled" ? "cancellation" : "confirmation";
+  const [type, setType] = useState<ManualMessageType>(defaultType);
+  useEffect(() => setType(defaultType), [defaultType]);
+
+  if (!upcoming || !["pending", "confirmed", "cancelled"].includes(booking.status)) return null;
+
+  const text = buildCustomerMessage(type, booking);
+  const recipient = ADMIN_MESSAGE_TEST_RECIPIENT ?? booking.customer_phone;
+  const links = messageLinks(recipient, text);
+  const options: Array<[ManualMessageType, string]> =
+    booking.status === "cancelled"
+      ? [["cancellation", "Otkazivanje"]]
+      : [
+          ["confirmation", "Potvrda"],
+          ["reminder", "Podsetnik"],
+        ];
+
+  return (
+    <section
+      aria-label="Obavesti klijentkinju"
+      className={`rounded-2xl border p-4 ${highlight ? "border-rose-deep bg-rose-50" : "border-rose-light"}`}
+    >
+      <p className="flex items-center gap-2 text-sm font-semibold">
+        <Send className="h-4 w-4 text-rose-deeper" aria-hidden />
+        {highlight ? "Sačuvano – obavestite klijentkinju" : "Obavesti klijentkinju"}
+      </p>
+      {options.length > 1 && (
+        <div className="mt-3 flex gap-2" role="group" aria-label="Vrsta poruke">
+          {options.map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={type === value}
+              onClick={() => setType(value)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold ${type === value ? "border-rose-deep bg-rose-deep text-white" : "border-rose-light"}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+      <p className="mt-3 whitespace-pre-wrap rounded-xl bg-white p-3 text-xs leading-relaxed text-ink-soft">{text}</p>
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        <a href={links.sms} className="inline-flex items-center justify-center gap-1.5 rounded-full bg-rose-deep px-3 py-2 text-sm font-semibold text-white hover:bg-rose-deeper">
+          <MessageSquare className="h-4 w-4" aria-hidden /> SMS
+        </a>
+        <a href={links.viber} className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#7360F2] px-3 py-2 text-sm font-semibold text-white hover:opacity-90">
+          <MessageCircle className="h-4 w-4" aria-hidden /> Viber
+        </a>
+        <a
+          href={links.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#128C4A] px-3 py-2 text-sm font-semibold text-white hover:opacity-90"
+        >
+          <MessageCircle className="h-4 w-4" aria-hidden /> WhatsApp
+        </a>
+      </div>
+      <p className="mt-2 text-xs text-ink-soft">
+        {ADMIN_MESSAGE_TEST_RECIPIENT ? (
+          <>
+            <strong className="text-amber-800">Probni režim:</strong> poruka ide na {formatPhoneLocal(ADMIN_MESSAGE_TEST_RECIPIENT)}, ne klijentkinji.
+          </>
+        ) : (
+          <>Otvara aplikaciju na ovom telefonu sa upisanom porukom za {formatPhoneLocal(booking.customer_phone)} – samo pritisnite „Pošalji”.</>
+        )}
+      </p>
+    </section>
   );
 }

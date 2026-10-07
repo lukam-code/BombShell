@@ -12,6 +12,7 @@ export const TIME_ZONE = "Europe/Belgrade";
 /** Link ka Google recenzijama – dopunite kada bude dostupan. Prazan string sakriva dugme. */
 export const GOOGLE_REVIEWS_URL = "";
 
+
 const phoneDisplay = "+381 65 662 6031";
 const phoneHref = "+381656626031";
 
