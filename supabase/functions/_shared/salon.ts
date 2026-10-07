@@ -2,8 +2,8 @@
 export const SALON = {
   name: "BOMBSHELL",
   fullName: "BOMBSHELL – Salon lepote",
-  address: "Branimira Ćosića 15, Novi Sad",
-  addressFull: "Branimira Ćosića 15, 21000 Novi Sad, Srbija",
+  address: "Branimira Ćosića 11, Novi Sad",
+  addressFull: "Branimira Ćosića 11, 21000 Novi Sad, Srbija",
   phoneDisplay: "+381 65 662 6031",
   phoneShort: "065 662 6031",
   phoneHref: "tel:+381656626031",

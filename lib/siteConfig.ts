@@ -38,12 +38,12 @@ export const siteConfig = {
   },
 
   address: {
-    street: "Branimira Ćosića 15",
+    street: "Branimira Ćosića 11",
     postalCode: "21000",
     city: "Novi Sad",
     country: "Srbija",
     countryCode: "RS",
-    full: "Branimira Ćosića 15, 21000 Novi Sad, Srbija",
+    full: "Branimira Ćosića 11, 21000 Novi Sad, Srbija",
   },
   geo: { lat: 45.2559058, lng: 19.831061 },
 

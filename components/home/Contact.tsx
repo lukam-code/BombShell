@@ -88,7 +88,7 @@ export function Contact() {
           <Reveal delay={0.15} className="flex flex-col gap-4">
             <div className="relative min-h-[320px] flex-1 overflow-hidden rounded-2xl border border-rose-light shadow-card">
               <iframe
-                title="Mapa – lokacija salona Bombshell, Branimira Ćosića 15, Novi Sad"
+                title={`Mapa – lokacija salona Bombshell, ${siteConfig.address.street}, ${siteConfig.address.city}`}
                 src={siteConfig.mapsEmbedUrl}
                 className="absolute inset-0 h-full w-full"
                 loading="lazy"

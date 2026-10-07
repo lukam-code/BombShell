@@ -57,12 +57,12 @@ Deno.test("tekstovi poruka – potvrda (Viber sa kvačicama, SMS GSM-7)", () => 
   const v = viberText("confirmation", msgInput);
   assertEquals(
     v,
-    "BOMBSHELL: Vaš termin je zakazan – Šišanje, ponedeljak 12.10. u 15:00. Adresa: Branimira Ćosića 15, Novi Sad. Otkazivanje najkasnije 24h ranije: https://bombshell.rs/otkazivanje/tok-123",
+    "BOMBSHELL: Vaš termin je zakazan – Šišanje, ponedeljak 12.10. u 15:00. Adresa: Branimira Ćosića 11, Novi Sad. Otkazivanje najkasnije 24h ranije: https://bombshell.rs/otkazivanje/tok-123",
   );
   const s = smsText("confirmation", msgInput);
   assertEquals(
     s,
-    "BOMBSHELL: Vas termin je zakazan - Sisanje, ponedeljak 12.10. u 15:00. Adresa: Branimira Cosica 15, Novi Sad. Otkazivanje najkasnije 24h ranije: https://bombshell.rs/otkazivanje/tok-123",
+    "BOMBSHELL: Vas termin je zakazan - Sisanje, ponedeljak 12.10. u 15:00. Adresa: Branimira Cosica 11, Novi Sad. Otkazivanje najkasnije 24h ranije: https://bombshell.rs/otkazivanje/tok-123",
   );
   assert(isGsm7(s));
 });
