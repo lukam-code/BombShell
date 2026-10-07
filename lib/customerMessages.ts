@@ -9,6 +9,9 @@ import type { Booking } from "./types";
  */
 export const ADMIN_MESSAGE_TEST_RECIPIENT: string | null = "+381629603888";
 
+/** Kontakt telefon koji se navodi u porukama klijentkinjama (probni period – ne Sanelin broj). */
+export const MESSAGE_CONTACT_PHONE = "062 960 3888";
+
 export type ManualMessageType = "confirmation" | "reminder" | "cancellation";
 
 /** Tekst poruke koju salon šalje sa svog telefona (SMS / Viber / WhatsApp) – bez ikakvog servisa. */
@@ -22,9 +25,9 @@ export function buildCustomerMessage(type: ManualMessageType, b: Booking) {
     case "confirmation":
       return `Poštovana ${first}, Vaš termin u salonu BOMBSHELL je potvrđen: ${service}, ${day} u ${time}. Adresa: ${siteConfig.address.street}, ${siteConfig.address.city}. Ako ne možete da dođete, otkažite najkasnije 24h ranije: ${cancelUrl} Vidimo se! BOMBSHELL`;
     case "reminder":
-      return `Poštovana ${first}, podsetnik: ${day} u ${time} imate termin u salonu BOMBSHELL (${service}). Ako ne možete da dođete, otkažite ovde: ${cancelUrl} ili nas pozovite na ${siteConfig.phone.display}.`;
+      return `Poštovana ${first}, podsetnik: ${day} u ${time} imate termin u salonu BOMBSHELL (${service}). Ako ne možete da dođete, otkažite ovde: ${cancelUrl} ili nas pozovite na ${MESSAGE_CONTACT_PHONE}.`;
     case "cancellation":
-      return `Poštovana ${first}, Vaš termin u salonu BOMBSHELL (${service}, ${day} u ${time}) je otkazan. Novi termin možete zakazati na ${siteConfig.url}/zakazivanje ili pozivom na ${siteConfig.phone.display}.`;
+      return `Poštovana ${first}, Vaš termin u salonu BOMBSHELL (${service}, ${day} u ${time}) je otkazan. Novi termin možete zakazati na ${siteConfig.url}/zakazivanje ili pozivom na ${MESSAGE_CONTACT_PHONE}.`;
   }
 }
 

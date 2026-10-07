@@ -70,7 +70,7 @@ Deno.test("tekstovi poruka – potvrda (Viber sa kvačicama, SMS GSM-7)", () => 
 Deno.test("tekstovi poruka – podsetnik i otkazivanje", () => {
   assertEquals(
     smsText("reminder", msgInput),
-    "BOMBSHELL: Podsetnik - sutra u 15:00 imate termin (Sisanje). Ako ne mozete da dodjete, otkazite ovde: https://bombshell.rs/otkazivanje/tok-123 ili pozovite 065 662 6031.",
+    "BOMBSHELL: Podsetnik - sutra u 15:00 imate termin (Sisanje). Ako ne mozete da dodjete, otkazite ovde: https://bombshell.rs/otkazivanje/tok-123 ili pozovite 062 960 3888.",
   );
   assertEquals(
     smsText("cancellation", msgInput),
