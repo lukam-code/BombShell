@@ -94,6 +94,20 @@ Ovi ključevi su javni po dizajnu – svu zaštitu podataka obezbeđuje Row Leve
 
 `SUPABASE_URL` i `SUPABASE_SERVICE_ROLE_KEY` Supabase automatski daje svakoj Edge Function.
 
+**Alternativa bez Supabase CLI-ja – podešavanje preko Vault-a (SQL Editor):** sve vrednosti iz tabele mogu se upisati i u Supabase Vault (nazivi malim slovima). Funkcije ih čitaju odatle ako ih nema u Edge secrets:
+
+```sql
+select vault.create_secret('re_xxxxxxxx', 'resend_api_key');
+select vault.create_secret('BOMBSHELL <termini@bomb-shell.com>', 'resend_from_email');
+select vault.create_secret('xxxxx.api.infobip.com', 'infobip_base_url');
+select vault.create_secret('xxxxxxxx', 'infobip_api_key');
+select vault.create_secret('Bombshell', 'infobip_sms_sender');
+-- izmena postojeće vrednosti:
+select vault.update_secret((select id from vault.secrets where name = 'resend_api_key'), 'novi_kljuc');
+```
+
+Podržani nazivi: `notify_secret`, `site_url`, `salon_notification_email`, `resend_api_key`, `resend_from_email`, `infobip_api_key`, `infobip_base_url`, `infobip_sms_sender`, `infobip_viber_sender`, `infobip_viber_sms_failover`.
+
 **Ako Infobip ili Resend ključevi nisu podešeni, zakazivanje i dalje radi normalno** – u log obaveštenja se samo upisuje status „Preskočeno”.
 
 ---

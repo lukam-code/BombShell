@@ -2,11 +2,11 @@
 // claim_due_reminders() atomično upisuje reminder_sent_at, pa se podsetnik nikad ne šalje dvaput.
 import { notifyCustomer } from "../_shared/customer.ts";
 import { createDb } from "../_shared/db.ts";
-import { readEnv } from "../_shared/env.ts";
+import { loadEnv } from "../_shared/env.ts";
 import { authorize, json } from "../_shared/http.ts";
 
 Deno.serve(async (req) => {
-  const env = readEnv();
+  const env = await loadEnv();
   const denied = authorize(req, env);
   if (denied) return denied;
 

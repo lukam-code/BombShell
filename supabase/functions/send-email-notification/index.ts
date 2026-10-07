@@ -2,11 +2,11 @@
 // klijentkinji potvrda sa .ics prilogom. Poziva je trigger u bazi (pg_net).
 import { createDb } from "../_shared/db.ts";
 import { type EmailPayload, handleEmail } from "../_shared/emails.ts";
-import { readEnv } from "../_shared/env.ts";
+import { loadEnv } from "../_shared/env.ts";
 import { authorize, json } from "../_shared/http.ts";
 
 Deno.serve(async (req) => {
-  const env = readEnv();
+  const env = await loadEnv();
   const denied = authorize(req, env);
   if (denied) return denied;
 

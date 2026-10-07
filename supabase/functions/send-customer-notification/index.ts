@@ -2,14 +2,14 @@
 // Poziva je trigger u bazi (pg_net) posle create_booking i promene statusa u 'cancelled'.
 import { notifyCustomer } from "../_shared/customer.ts";
 import { createDb } from "../_shared/db.ts";
-import { readEnv } from "../_shared/env.ts";
+import { loadEnv } from "../_shared/env.ts";
 import { authorize, json } from "../_shared/http.ts";
 import type { CustomerMessageType } from "../_shared/messages.ts";
 
 const TYPES: CustomerMessageType[] = ["confirmation", "reminder", "cancellation"];
 
 Deno.serve(async (req) => {
-  const env = readEnv();
+  const env = await loadEnv();
   const denied = authorize(req, env);
   if (denied) return denied;
 

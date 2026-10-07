@@ -12,7 +12,7 @@
     "images": "node scripts/optimize-images.mjs",
     "test:db": "bash tests/sql/run.sh",
     "test:e2e": "node tests/e2e/booking.e2e.mjs mobile && node tests/e2e/booking.e2e.mjs desktop && node tests/e2e/admin.e2e.mjs desktop && node tests/e2e/admin.e2e.mjs mobile",
-    "test:functions": "deno test supabase/functions/_shared/"
+    "test:functions": "deno test --allow-env supabase/functions/_shared/"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
