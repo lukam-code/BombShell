@@ -110,8 +110,13 @@ export function BookingWizard({
     [step],
   );
 
-  // Fokus na naslov koraka zbog čitača ekrana i tastature
+  // Fokus na naslov koraka zbog čitača ekrana i tastature – samo pri promeni koraka, ne pri prvom učitavanju
+  const firstRender = useRef(true);
   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
     headingRef.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   }, [step, success, reduce]);
@@ -173,7 +178,7 @@ export function BookingWizard({
     <div>
       {!success && <ProgressBar step={step} />}
 
-      <div ref={headingRef} tabIndex={-1} className="outline-none">
+      <div ref={headingRef} tabIndex={-1} className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
         {!success && (
           <div className="mb-6 flex items-center gap-3">
             {step > 1 && (

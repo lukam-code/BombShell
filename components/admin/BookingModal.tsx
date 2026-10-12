@@ -159,10 +159,18 @@ export function BookingModal({ booking, onClose, onChanged }: { booking: Booking
 function NotifyCustomer({ booking, highlight }: { booking: Booking; highlight: boolean }) {
   const upcoming = new Date(booking.start_time) > new Date();
   const defaultType: ManualMessageType = booking.status === "cancelled" ? "cancellation" : "confirmation";
+  // (status "pending" je obrađen ispod – potvrda se nudi tek posle klika na "Potvrdi")
   const [type, setType] = useState<ManualMessageType>(defaultType);
   useEffect(() => setType(defaultType), [defaultType]);
 
   if (!upcoming || !["pending", "confirmed", "cancelled"].includes(booking.status)) return null;
+  if (booking.status === "pending") {
+    return (
+      <p className="rounded-2xl border border-rose-light bg-rose-50 p-3 text-xs text-ink-soft">
+        Termin čeka potvrdu. Kliknite „Potvrdi”, pa će se pojaviti poruka za klijentkinju (SMS / Viber / WhatsApp).
+      </p>
+    );
+  }
 
   const text = buildCustomerMessage(type, booking);
   const recipient = ADMIN_MESSAGE_TEST_RECIPIENT ?? booking.customer_phone;
@@ -217,6 +225,7 @@ function NotifyCustomer({ booking, highlight }: { booking: Booking; highlight: b
         </a>
       </div>
       <p className="mt-2 text-xs text-ink-soft">
+        Ako su uključene automatske SMS/Viber poruke, klijentkinja je već obaveštena – ovo je samo dodatna, ručna poruka.{" "}
         {ADMIN_MESSAGE_TEST_RECIPIENT ? (
           <>
             <strong className="text-amber-800">Probni režim:</strong> poruka ide na {formatPhoneLocal(ADMIN_MESSAGE_TEST_RECIPIENT)}, ne klijentkinji.

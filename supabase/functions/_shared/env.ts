@@ -62,7 +62,10 @@ let cache: { env: Env; at: number } | null = null;
 export async function loadEnv(fetchFn: typeof fetch = fetch): Promise<Env> {
   if (cache && Date.now() - cache.at < 60_000) return cache.env;
   const env = readEnv();
-  if (env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY) {
+  // Sve već podešeno kroz Edge secrets → Vault nije potreban
+  const missing = Object.values(VAULT_KEYS).some((k) => !env[k]);
+  let ok = !missing;
+  if (missing && env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY) {
     try {
       const res = await fetchFn(`${env.SUPABASE_URL}/rest/v1/rpc/get_notification_config`, {
         method: "POST",
@@ -80,6 +83,7 @@ export async function loadEnv(fetchFn: typeof fetch = fetch): Promise<Env> {
           const v = vault?.[name]?.trim();
           if (v && !env[key]) env[key] = v;
         }
+        ok = true;
       } else {
         console.error("Vault podešavanja nisu dostupna:", res.status);
       }
@@ -87,7 +91,8 @@ export async function loadEnv(fetchFn: typeof fetch = fetch): Promise<Env> {
       console.error("Vault podešavanja nisu dostupna:", e instanceof Error ? e.message : e);
     }
   }
-  cache = { env, at: Date.now() };
+  // Keširaj samo uspešno učitana podešavanja – privremena greška se ne "pamti" 60 s
+  cache = ok ? { env, at: Date.now() } : null;
   return env;
 }
 

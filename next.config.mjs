@@ -20,9 +20,10 @@ const nextConfig = {
         ],
       },
       {
-        // Slike se retko menjaju – browser ih kešira 30 dana (nove slike dobijaju novo ime)
+        // Slike se retko menjaju: keš 1 dan + do 7 dana stara kopija dok se proverava nova
+        // (imena fajlova nemaju verziju, pa duži keš ne bi pokazao zamenjenu sliku)
         source: "/images/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
       },
       {
         // Linkovi za otkazivanje i admin panel ne smeju u pretragu

@@ -18,3 +18,26 @@ Deno.test("loadEnv: Edge secrets imaju prednost, ostalo se čita iz Vault-a", as
   assertEquals(env.SITE_URL, "https://iz-env.rs");
   assertEquals(env.INFOBIP_API_KEY, undefined);
 });
+
+Deno.test("loadEnv: neuspelo čitanje Vault-a se ne kešira", async () => {
+  Deno.env.set("SUPABASE_URL", "https://y.supabase.co");
+  Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "k");
+  Deno.env.delete("SITE_URL");
+  // poništi keš iz prethodnog testa: prvi poziv ide posle isteka (simulirano novim modulom nije moguće),
+  // pa koristimo novi import sa query parametrom
+  const mod = await import("./env.ts?neuspeh");
+  let calls = 0;
+  const failing = (async () => {
+    calls++;
+    return new Response("err", { status: 500 });
+  }) as typeof fetch;
+  const ok = (async () => {
+    calls++;
+    return new Response(JSON.stringify({ notify_secret: "s2" }));
+  }) as typeof fetch;
+  const first = await mod.loadEnv(failing);
+  assertEquals(first.NOTIFY_WEBHOOK_SECRET, undefined);
+  const second = await mod.loadEnv(ok);
+  assertEquals(second.NOTIFY_WEBHOOK_SECRET, "s2");
+  assertEquals(calls, 2);
+});

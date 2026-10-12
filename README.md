@@ -73,7 +73,7 @@ scripts/optimize-images.mjs
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API → Project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API → `anon` / publishable ključ |
-| `NEXT_PUBLIC_SITE_URL` | Javna adresa sajta, npr. `https://www.bombshell.rs` |
+| `NEXT_PUBLIC_SITE_URL` | Javna adresa sajta, npr. `https://www.bomb-shell.com` |
 
 Ovi ključevi su javni po dizajnu – svu zaštitu podataka obezbeđuje Row Level Security u bazi.
 
@@ -82,14 +82,14 @@ Ovi ključevi su javni po dizajnu – svu zaštitu podataka obezbeđuje Row Leve
 | Secret | Obavezan | Opis |
 | --- | --- | --- |
 | `NOTIFY_WEBHOOK_SECRET` | ✅ | Nasumičan string; isti kao `notify_secret` u Vault-u (korak 3) |
-| `SITE_URL` | ✅ | Npr. `https://www.bombshell.rs` (za linkove u porukama) |
+| `SITE_URL` | ✅ | Npr. `https://www.bomb-shell.com` (za linkove u porukama) |
 | `INFOBIP_API_KEY` | za SMS/Viber | Infobip API ključ |
 | `INFOBIP_BASE_URL` | za SMS/Viber | Npr. `xxxxx.api.infobip.com` |
 | `INFOBIP_SMS_SENDER` | opciono | Ime pošiljaoca SMS-a, npr. `Bombshell` |
 | `INFOBIP_VIBER_SENDER` | opciono | Registrovani Viber pošiljalac; bez njega se šalje samo SMS |
 | `INFOBIP_VIBER_SMS_FAILOVER` | opciono | `true` → Infobip sam šalje SMS ako primalac nema Viber |
 | `RESEND_API_KEY` | za email | Resend API ključ |
-| `RESEND_FROM_EMAIL` | opciono | Npr. `BOMBSHELL <termini@bombshell.rs>`; podrazumevano `onboarding@resend.dev` |
+| `RESEND_FROM_EMAIL` | opciono | Npr. `BOMBSHELL <info@bomb-shell.com>`; podrazumevano `onboarding@resend.dev` |
 | `SALON_NOTIFICATION_EMAIL` | za email salonu | Npr. `info@bomb-shell.com` |
 
 `SUPABASE_URL` i `SUPABASE_SERVICE_ROLE_KEY` Supabase automatski daje svakoj Edge Function.
@@ -195,10 +195,10 @@ Poruke su kratke. SMS verzija je bez kvačica (č→c, ć→c, š→s, ž→z, �
 1. Otvorite nalog na <https://resend.com> i napravite API ključ (**API Keys → Create**).
 2. **Za testiranje:** bez verifikovanog domena koristite pošiljaoca `onboarding@resend.dev` (podrazumevano). Resend tada isporučuje poruke samo na email adresu vlasnika Resend naloga.
 3. **Verifikacija sopstvenog domena** (obavezno za slanje klijentkinjama):
-   - **Domains → Add Domain** → upišite npr. `bombshell.rs`.
+   - **Domains → Add Domain** → upišite npr. `bomb-shell.com`.
    - Resend prikazuje DNS zapise (SPF – `TXT`/`MX` za `send.` poddomen, DKIM – `TXT resend._domainkey`). Dodajte ih kod registra domena ili DNS provajdera.
    - Kliknite **Verify** (propagacija traje od nekoliko minuta do nekoliko sati).
-   - Postavite `RESEND_FROM_EMAIL="BOMBSHELL <termini@bombshell.rs>"`.
+   - Postavite `RESEND_FROM_EMAIL="BOMBSHELL <info@bomb-shell.com>"`.
 4. `SALON_NOTIFICATION_EMAIL` je adresa na koju salon dobija obaveštenja o novim/otkazanim terminima i recenzijama.
 
 ### 7. Deploy Edge Functions
@@ -206,10 +206,10 @@ Poruke su kratke. SMS verzija je bez kvačica (č→c, ć→c, š→s, ž→z, �
 ```bash
 npx supabase secrets set \
   NOTIFY_WEBHOOK_SECRET=<ISTI-STRING-KAO-U-VAULTU> \
-  SITE_URL=https://www.bombshell.rs \
+  SITE_URL=https://www.bomb-shell.com \
   SALON_NOTIFICATION_EMAIL=info@bomb-shell.com \
   INFOBIP_API_KEY=... INFOBIP_BASE_URL=xxxxx.api.infobip.com INFOBIP_SMS_SENDER=Bombshell \
-  RESEND_API_KEY=re_... RESEND_FROM_EMAIL="BOMBSHELL <termini@bombshell.rs>"
+  RESEND_API_KEY=re_... RESEND_FROM_EMAIL="BOMBSHELL <info@bomb-shell.com>"
 
 npx supabase functions deploy send-customer-notification --no-verify-jwt
 npx supabase functions deploy send-email-notification --no-verify-jwt
@@ -245,7 +245,7 @@ npm test             # unit testovi (telefon, vreme)
 2. Framework: **Next.js** (automatski).
 3. **Environment Variables:** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`.
 4. **Deploy.** Posle prvog deploy-a:
-   - u Vercel → Settings → Domains povežite domen (npr. `bombshell.rs`)
+   - u Vercel → Settings → Domains povežite domen (npr. `bomb-shell.com`)
    - ažurirajte `NEXT_PUBLIC_SITE_URL`, Supabase Site URL (korak 1) i secret `SITE_URL` (korak 7) na pravi domen, pa uradite redeploy.
 
 ---
