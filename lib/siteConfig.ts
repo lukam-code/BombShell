@@ -48,7 +48,7 @@ export const siteConfig = {
   geo: { lat: 45.2559058, lng: 19.831061 },
 
   phone: { display: phoneDisplay, href: `tel:${phoneHref}`, e164: phoneHref },
-  email: "sanela.dejan@gmail.com",
+  email: "info@bomb-shell.com",
 
   social: {
     instagram: "https://www.instagram.com/bombshell__ns",

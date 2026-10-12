@@ -90,7 +90,7 @@ Ovi ključevi su javni po dizajnu – svu zaštitu podataka obezbeđuje Row Leve
 | `INFOBIP_VIBER_SMS_FAILOVER` | opciono | `true` → Infobip sam šalje SMS ako primalac nema Viber |
 | `RESEND_API_KEY` | za email | Resend API ključ |
 | `RESEND_FROM_EMAIL` | opciono | Npr. `BOMBSHELL <termini@bombshell.rs>`; podrazumevano `onboarding@resend.dev` |
-| `SALON_NOTIFICATION_EMAIL` | za email salonu | Npr. `sanela.dejan@gmail.com` |
+| `SALON_NOTIFICATION_EMAIL` | za email salonu | Npr. `info@bomb-shell.com` |
 
 `SUPABASE_URL` i `SUPABASE_SERVICE_ROLE_KEY` Supabase automatski daje svakoj Edge Function.
 
@@ -172,7 +172,7 @@ Kako radi: pg_cron svakih 15 minuta poziva Edge Function `send-reminders`. Ona p
 
 ```sql
 insert into public.admin_users (user_id)
-select id from auth.users where email = 'sanela.dejan@gmail.com';
+select id from auth.users where email = 'sanela@bomb-shell.com';
 ```
 
 3. Prijava: `https://<sajt>/admin`.
@@ -207,7 +207,7 @@ Poruke su kratke. SMS verzija je bez kvačica (č→c, ć→c, š→s, ž→z, �
 npx supabase secrets set \
   NOTIFY_WEBHOOK_SECRET=<ISTI-STRING-KAO-U-VAULTU> \
   SITE_URL=https://www.bombshell.rs \
-  SALON_NOTIFICATION_EMAIL=sanela.dejan@gmail.com \
+  SALON_NOTIFICATION_EMAIL=info@bomb-shell.com \
   INFOBIP_API_KEY=... INFOBIP_BASE_URL=xxxxx.api.infobip.com INFOBIP_SMS_SENDER=Bombshell \
   RESEND_API_KEY=re_... RESEND_FROM_EMAIL="BOMBSHELL <termini@bombshell.rs>"
 

@@ -21,7 +21,16 @@ export function IntroAnimation() {
     <div aria-hidden className="intro-overlay fixed inset-0 z-[90] flex items-center justify-center bg-cream">
       <div className="intro-mark text-center">
         {/* eslint-disable-next-line @next/next/no-img-element -- mora se prikazati odmah, bez čekanja JS-a */}
-        <img src="/images/logo.webp" alt="" width={600} height={494} className="mx-auto h-auto w-56 sm:w-72" />
+        <img
+          src="/images/logo-288.webp"
+          srcSet="/images/logo-224.webp 224w, /images/logo-288.webp 288w, /images/logo-448.webp 448w"
+          sizes="(min-width: 640px) 288px, 224px"
+          alt=""
+          width={600}
+          height={494}
+          decoding="async"
+          className="mx-auto h-auto w-56 sm:w-72"
+        />
         <span className="intro-line mx-auto mt-4 block h-px bg-gold" />
       </div>
     </div>

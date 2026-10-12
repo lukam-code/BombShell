@@ -14,6 +14,9 @@ const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
   variable: "--font-montserrat",
   display: "swap",
+  // Tekst se odmah prikazuje sistemskim fontom (sa prilagođenim metrikama), pa
+  // preload nije potreban – manje bajtova pre prvog prikaza na mobilnom.
+  preload: false,
 });
 
 export const metadata: Metadata = {
