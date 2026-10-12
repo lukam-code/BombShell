@@ -20,7 +20,7 @@ export const siteConfig = {
   fullName: "BOMBSHELL – Salon lepote",
   slogan:
     "Iz našeg salona izaći ćete uvek negovane i lepe, jer nama je Vaša lepota uvek na prvom mestu!",
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, ""),
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://www.bomb-shell.com").replace(/\/$/, ""),
 
   seo: {
     title: "Salon lepote Novi Sad | Bombshell – frizer, manikir, trepavice, masaže",

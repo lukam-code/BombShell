@@ -49,8 +49,8 @@ select pg_temp.ok((select max(label) from public.get_available_slots((select svc
 select pg_temp.ok((select max(label) from public.get_available_slots((select svc120 from ctx), (select mon from ctx))) = '19:00', 'farbanje 120 min: poslednji slot 19:00');
 select pg_temp.ok((select count(*) from public.get_available_slots((select svc45 from ctx), (select sun from ctx))) = 0, 'nedelja: nema slotova');
 select pg_temp.ok((select count(*) from public.get_available_slots((select svc45 from ctx), (select tue_blocked from ctx))) = 0, 'blokiran datum: nema slotova');
-select pg_temp.ok((select count(*) from public.get_available_slots((select svc45 from ctx), current_date - 1)) = 0, 'prošli datum: nema slotova');
-select pg_temp.ok((select count(*) from public.get_available_slots((select svc45 from ctx), current_date + 61)) = 0, 'više od 60 dana: nema slotova');
+select pg_temp.ok((select count(*) from public.get_available_slots((select svc45 from ctx), (now() at time zone 'Europe/Belgrade')::date - 1)) = 0, 'prošli datum: nema slotova');
+select pg_temp.ok((select count(*) from public.get_available_slots((select svc45 from ctx), (now() at time zone 'Europe/Belgrade')::date + 61)) = 0, 'više od 60 dana: nema slotova');
 select pg_temp.ok((select count(*) from public.get_available_slots((select svc45 from ctx), current_date)) = 0
   or (select min(start_time) from public.get_available_slots((select svc45 from ctx), current_date)) >= now() + interval '2 hours',
   'danas: nema slotova za manje od 2h');
@@ -81,7 +81,7 @@ select pg_temp.expect_error(format($q$select * from public.create_booking(%L, %L
 select pg_temp.expect_error(format($q$select * from public.create_booking(%L, %L, 'Ana Anić', '+381651111111')$q$,
   (select svc45 from ctx), date_trunc('hour', now()) + interval '1 hour'), 'BS422', 'manje od 2h unapred');
 select pg_temp.expect_error(format($q$select * from public.create_booking(%L, %L, 'Ana Anić', '+381651111111')$q$,
-  (select svc45 from ctx), pg_temp.at(current_date + 62, '10:00')), 'BS422', 'više od 60 dana unapred');
+  (select svc45 from ctx), pg_temp.at((now() at time zone 'Europe/Belgrade')::date + 62, '10:00')), 'BS422', 'više od 60 dana unapred');
 select pg_temp.expect_error(format($q$select * from public.create_booking(%L, %L, 'Ana Anić', '+381651111111')$q$,
   (select svc45 from ctx), pg_temp.at((select mon from ctx), '11:10')), 'BS400', 'vreme van 15-min mreže');
 select pg_temp.expect_error(format($q$select * from public.create_booking(%L, %L, 'Ana Anić', '0651111111')$q$,
