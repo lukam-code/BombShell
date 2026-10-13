@@ -46,7 +46,7 @@ await page.goto(`${BASE}/#recenzije`);
 for (let i = 0; ; i++) {
   // (posle resetovanja baze keš može privremeno imati i praznu listu usluga)
   const empty = await page.getByText("Budite prva koja će podeliti utisak").isVisible().catch(() => false);
-  const services = await page.locator("#usluge").getByText("Gel lak").count().catch(() => 0);
+  const services = await page.locator("#usluge").getByRole("button", { name: "Manikir", exact: true }).count().catch(() => 0);
   if (empty && services > 0) break;
   if (i >= 15) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
   await page.waitForTimeout(10_000);
