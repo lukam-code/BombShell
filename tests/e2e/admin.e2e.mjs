@@ -40,8 +40,13 @@ sql(`delete from reviews;
      update working_hours set close_time = '21:00' where day_of_week = 6;
      update services set sort_order = case name when 'Šišanje' then 1 when 'Feniranje' then 2 else sort_order end
        where category_id = (select id from service_categories where slug = 'zenski-frizer');`);
-await page.goto(`${BASE}/#recenzije`);
-await page.getByText("Budite prva koja će podeliti utisak").waitFor();
+// početna je keširana 60 s (ISR) – posle resetovanja baze sačekaj da se keš osveži
+for (let i = 0; ; i++) {
+  await page.goto(`${BASE}/#recenzije`);
+  if (await page.getByText("Budite prva koja će podeliti utisak").isVisible().catch(() => false)) break;
+  if (i >= 8) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
+  await page.waitForTimeout(10_000);
+}
 assert(true, "prazan prikaz recenzija (nema lažnih recenzija)");
 await page.getByRole("button", { name: /Ostavite recenziju/ }).click();
 const dialog = page.getByRole("dialog");
@@ -94,6 +99,9 @@ await shot("tabla");
 // promena statusa: potvrdi
 await page.getByText(`Admin Test Danas${suffix}`).click();
 await page.getByRole("dialog").getByRole("button", { name: "Potvrdi" }).click();
+// prozor ostaje otvoren (panel za ručnu poruku klijentkinji) – posle potvrde ga zatvaramo
+await page.getByRole("dialog").getByText("Sačuvano – obavestite klijentkinju").waitFor();
+await page.getByRole("dialog").getByRole("button", { name: "Zatvori" }).click();
 await page.getByRole("dialog").waitFor({ state: "detached" });
 await page.waitForTimeout(500);
 assert(sql(`select status from bookings where customer_name = 'Admin Test Danas${suffix}'`) === "confirmed", "status → potvrđen");
@@ -139,6 +147,8 @@ assert(true, "nedeljni kalendar prikazuje termin");
 await page.getByText(`Admin Test Telefon${suffix}`).first().click();
 await page.getByRole("dialog").getByRole("button", { name: "Otkaži" }).click();
 await page.getByRole("dialog").getByRole("button", { name: "Da, otkaži" }).click();
+await page.getByRole("dialog").getByRole("button", { name: "Da, otkaži" }).waitFor({ state: "detached" });
+await page.getByRole("dialog").getByRole("button", { name: "Zatvori" }).click();
 await page.getByRole("dialog").waitFor({ state: "detached" });
 await page.waitForTimeout(500);
 assert(sql(`select status || '|' || cancelled_by from bookings where customer_name = 'Admin Test Telefon${suffix}'`) === "cancelled|salon", "admin otkazivanje → cancelled/salon");
