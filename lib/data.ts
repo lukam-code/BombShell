@@ -1,7 +1,20 @@
 import { getPublicSupabase } from "./supabase/public";
 import type { CategoryWithServices, PublicReview, ReviewsSummary } from "./types";
 
-export async function getCategoriesWithServices(): Promise<CategoryWithServices[] | null> {
+type LoadOptions = {
+  /**
+   * Za ISR strane (početna): greška pri osvežavanju se baca, pa Next zadržava poslednju
+   * ispravnu verziju strane umesto da 60 s prikazuje praznu listu. Tokom build-a se ne baca.
+   */
+  throwOnError?: boolean;
+};
+
+function fail(opts: LoadOptions | undefined, message: string) {
+  if (opts?.throwOnError && process.env.NEXT_PHASE !== "phase-production-build") throw new Error(message);
+  console.error(message);
+}
+
+export async function getCategoriesWithServices(opts?: LoadOptions): Promise<CategoryWithServices[] | null> {
   const sb = getPublicSupabase();
   if (!sb) return null;
   const { data, error } = await sb
@@ -10,7 +23,7 @@ export async function getCategoriesWithServices(): Promise<CategoryWithServices[
     .order("sort_order")
     .order("sort_order", { referencedTable: "services" });
   if (error) {
-    console.error("Greška pri učitavanju usluga:", error.message);
+    fail(opts, `Greška pri učitavanju usluga: ${error.message}`);
     return null;
   }
   return (data as CategoryWithServices[])
@@ -18,7 +31,7 @@ export async function getCategoriesWithServices(): Promise<CategoryWithServices[
     .filter((c) => c.services.length > 0);
 }
 
-export async function getApprovedReviews(): Promise<{ reviews: PublicReview[]; summary: ReviewsSummary }> {
+export async function getApprovedReviews(opts?: LoadOptions): Promise<{ reviews: PublicReview[]; summary: ReviewsSummary }> {
   const empty = { reviews: [], summary: { average: 0, count: 0 } };
   const sb = getPublicSupabase();
   if (!sb) return empty;
@@ -29,7 +42,7 @@ export async function getApprovedReviews(): Promise<{ reviews: PublicReview[]; s
     .order("created_at", { ascending: false })
     .limit(200);
   if (error) {
-    console.error("Greška pri učitavanju recenzija:", error.message);
+    fail(opts, `Greška pri učitavanju recenzija: ${error.message}`);
     return empty;
   }
   const reviews = (data ?? []) as unknown as PublicReview[];

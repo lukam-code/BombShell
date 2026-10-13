@@ -40,12 +40,17 @@ sql(`delete from reviews;
      update working_hours set close_time = '21:00' where day_of_week = 6;
      update services set sort_order = case name when 'Šišanje' then 1 when 'Feniranje' then 2 else sort_order end
        where category_id = (select id from service_categories where slug = 'zenski-frizer');`);
-// početna je keširana 60 s (ISR + keš podataka, do 2 ciklusa) – posle resetovanja baze sačekaj osvežavanje
+// početna je keširana 60 s (ISR) – posle resetovanja baze sačekaj osvežavanje.
+// page.reload(): ponovni goto na isti URL sa #sidrom ne učitava stranu ponovo.
+await page.goto(`${BASE}/#recenzije`);
 for (let i = 0; ; i++) {
-  await page.goto(`${BASE}/#recenzije`);
-  if (await page.getByText("Budite prva koja će podeliti utisak").isVisible().catch(() => false)) break;
-  if (i >= 40) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
+  // (posle resetovanja baze keš može privremeno imati i praznu listu usluga)
+  const empty = await page.getByText("Budite prva koja će podeliti utisak").isVisible().catch(() => false);
+  const services = await page.locator("#usluge").getByText("Gel lak").count().catch(() => 0);
+  if (empty && services > 0) break;
+  if (i >= 15) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
   await page.waitForTimeout(10_000);
+  await page.reload();
 }
 assert(true, "prazan prikaz recenzija (nema lažnih recenzija)");
 await page.getByRole("button", { name: /Ostavite recenziju/ }).click();

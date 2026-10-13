@@ -14,7 +14,10 @@ import { beautySalonJsonLd } from "@/lib/jsonld";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [categories, { reviews, summary }] = await Promise.all([getCategoriesWithServices(), getApprovedReviews()]);
+  const [categories, { reviews, summary }] = await Promise.all([
+    getCategoriesWithServices({ throwOnError: true }),
+    getApprovedReviews({ throwOnError: true }),
+  ]);
 
   return (
     <>
