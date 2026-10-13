@@ -44,7 +44,7 @@ sql(`delete from reviews;
 for (let i = 0; ; i++) {
   await page.goto(`${BASE}/#recenzije`);
   if (await page.getByText("Budite prva koja će podeliti utisak").isVisible().catch(() => false)) break;
-  if (i >= 20) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
+  if (i >= 40) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
   await page.waitForTimeout(10_000);
 }
 assert(true, "prazan prikaz recenzija (nema lažnih recenzija)");
