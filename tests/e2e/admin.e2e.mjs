@@ -40,11 +40,11 @@ sql(`delete from reviews;
      update working_hours set close_time = '21:00' where day_of_week = 6;
      update services set sort_order = case name when 'Šišanje' then 1 when 'Feniranje' then 2 else sort_order end
        where category_id = (select id from service_categories where slug = 'zenski-frizer');`);
-// početna je keširana 60 s (ISR) – posle resetovanja baze sačekaj da se keš osveži
+// početna je keširana 60 s (ISR + keš podataka, do 2 ciklusa) – posle resetovanja baze sačekaj osvežavanje
 for (let i = 0; ; i++) {
   await page.goto(`${BASE}/#recenzije`);
   if (await page.getByText("Budite prva koja će podeliti utisak").isVisible().catch(() => false)) break;
-  if (i >= 8) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
+  if (i >= 20) throw new Error("FAIL: prazan prikaz recenzija nije prikazan");
   await page.waitForTimeout(10_000);
 }
 assert(true, "prazan prikaz recenzija (nema lažnih recenzija)");
