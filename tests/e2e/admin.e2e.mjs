@@ -71,7 +71,7 @@ await page.waitForURL(/\/admin\/login\?next=/);
 assert(true, "middleware preusmerava neulogovane na /admin/login");
 
 // pogrešna lozinka
-await page.getByLabel("Email", { exact: true }).fill("admin@bombshell.rs");
+await page.getByLabel(/^Email/).fill("admin@bombshell.rs");
 await page.getByLabel("Lozinka").fill("pogresna");
 await page.getByRole("button", { name: "Prijavi se" }).click();
 await page.getByText("Pogrešan email ili lozinka.").waitFor();
