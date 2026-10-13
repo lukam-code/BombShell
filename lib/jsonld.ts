@@ -12,6 +12,7 @@ export function beautySalonJsonLd(summary: ReviewsSummary) {
     slogan: siteConfig.slogan,
     url: siteConfig.url,
     telephone: siteConfig.phone.e164,
+    contactPoint: siteConfig.phones.map((p) => ({ "@type": "ContactPoint", telephone: p.e164, contactType: "customer service", availableLanguage: "sr" })),
     email: siteConfig.email,
     image: `${siteConfig.url}/opengraph-image`,
     priceRange: "$$",

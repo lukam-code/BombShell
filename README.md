@@ -172,7 +172,7 @@ Kako radi: pg_cron svakih 15 minuta poziva Edge Function `send-reminders`. Ona p
 
 ```sql
 insert into public.admin_users (user_id)
-select id from auth.users where email = 'sanela@bomb-shell.com';
+select id from auth.users where email = 'info@bomb-shell.com';
 ```
 
 3. Prijava: `https://<sajt>/admin`.

@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { getBrowserSupabase } from "@/lib/supabase/client";
 
-// Supabase Auth koristi email; korisničko ime (npr. "Sanela") se pretvara u sanela@bomb-shell.com.
+// Prijava emailom (info@bomb-shell.com). Unos bez „@” (npr. "info") dopunjuje se u info@bomb-shell.com.
 const USERNAME_DOMAIN = "bomb-shell.com";
 function toLoginEmail(value: string) {
   const v = value.trim().toLowerCase();
@@ -33,7 +33,7 @@ function LoginForm() {
     const { error: err } = await getBrowserSupabase().auth.signInWithPassword({ email: toLoginEmail(email), password });
     setBusy(false);
     if (err) {
-      setError(err.message.toLowerCase().includes("invalid") ? "Pogrešno korisničko ime ili lozinka." : "Prijava nije uspela. Pokušajte ponovo.");
+      setError(err.message.toLowerCase().includes("invalid") ? "Pogrešan email ili lozinka." : "Prijava nije uspela. Pokušajte ponovo.");
       return;
     }
     const next = params.get("next");
@@ -44,8 +44,9 @@ function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4" noValidate>
       <Input
-        label="Korisničko ime"
+        label="Email"
         type="text"
+        inputMode="email"
         autoComplete="username"
         autoCapitalize="none"
         required

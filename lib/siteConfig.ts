@@ -14,6 +14,8 @@ export const GOOGLE_REVIEWS_URL = "";
 
 const phoneDisplay = "+381 65 662 6031";
 const phoneHref = "+381656626031";
+const phone2Display = "+381 65 2308 095";
+const phone2Href = "+381652308095";
 
 export const siteConfig = {
   name: "BOMBSHELL",
@@ -48,6 +50,11 @@ export const siteConfig = {
   geo: { lat: 45.2559058, lng: 19.831061 },
 
   phone: { display: phoneDisplay, href: `tel:${phoneHref}`, e164: phoneHref },
+  /** Svi kontakt telefoni (prvi je glavni – koristi se na dugmadima „Pozovite”). */
+  phones: [
+    { display: phoneDisplay, href: `tel:${phoneHref}`, e164: phoneHref },
+    { display: phone2Display, href: `tel:${phone2Href}`, e164: phone2Href },
+  ],
   email: "info@bomb-shell.com",
 
   social: {

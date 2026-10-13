@@ -38,9 +38,11 @@ export function Contact() {
                 <Icon><Phone className="h-5 w-5" /></Icon>
                 <div>
                   <p className="text-sm font-semibold text-ink">Telefon</p>
-                  <a href={siteConfig.phone.href} className="text-ink-soft transition-colors hover:text-rose-deeper">
-                    {siteConfig.phone.display}
-                  </a>
+                  {siteConfig.phones.map((p) => (
+                    <a key={p.e164} href={p.href} className="block text-ink-soft transition-colors hover:text-rose-deeper">
+                      {p.display}
+                    </a>
+                  ))}
                 </div>
               </li>
               <li className="flex items-start gap-4">

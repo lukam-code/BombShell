@@ -37,11 +37,13 @@ export function Footer() {
             <li>
               {siteConfig.address.postalCode} {siteConfig.address.city}
             </li>
-            <li>
-              <a href={siteConfig.phone.href} className="transition-colors hover:text-rose-deeper">
-                {siteConfig.phone.display}
-              </a>
-            </li>
+            {siteConfig.phones.map((p) => (
+              <li key={p.e164}>
+                <a href={p.href} className="transition-colors hover:text-rose-deeper">
+                  {p.display}
+                </a>
+              </li>
+            ))}
             <li>
               <a href={`mailto:${siteConfig.email}`} className="break-all transition-colors hover:text-rose-deeper">
                 {siteConfig.email}

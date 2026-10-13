@@ -5,7 +5,20 @@ export function InfoBar() {
   const items = [
     { icon: Clock, label: "Radno vreme", value: siteConfig.openingHoursShort, href: undefined },
     { icon: MapPin, label: "Adresa", value: `${siteConfig.address.street}, ${siteConfig.address.city}`, href: siteConfig.navigationUrl },
-    { icon: Phone, label: "Telefon", value: siteConfig.phone.display, href: siteConfig.phone.href },
+    {
+      icon: Phone,
+      label: "Telefon",
+      value: (
+        <>
+          {siteConfig.phones.map((p) => (
+            <a key={p.e164} href={p.href} className="block transition-colors hover:text-rose-deeper">
+              {p.display}
+            </a>
+          ))}
+        </>
+      ),
+      href: undefined,
+    },
   ];
   return (
     <section aria-label="Osnovne informacije" className="relative z-10 -mt-16 px-5">
