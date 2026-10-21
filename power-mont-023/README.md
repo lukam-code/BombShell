@@ -10,6 +10,7 @@ kontakt/index.html    /kontakt   kontakt stranica sa formom
 assets/css/styles.css            svi stilovi (boje i fontovi su promenljive na vrhu fajla)
 assets/js/main.js                navigacija, suptilne animacije, kontakt forma
 assets/img/                      fotografije (trenutno privremene, vidi dole)
+assets/logo-mark.svg            monogram PM (vektorski, napravljen po logotipu)
 assets/favicon.svg
 robots.txt
 scripts/generate-placeholders.py generator privremenih slika
@@ -29,6 +30,13 @@ Putanje su apsolutne (`/assets/...`, `/kontakt/`), pa sajt treba otvarati preko 
 
 Ceo sadržaj foldera `power-mont-023/` otpremiti u koren sajta (npr. `public_html` na cPanel/Hostinger hostingu,
 ili kao „publish directory“ na Netlify / Vercel / Cloudflare Pages). `/kontakt` se servira iz `kontakt/index.html`.
+
+## Vizuelni identitet
+
+Stil prati logotip: grafitna pozadina sa blagim zrnom (`assets/img/grain.png`), srebrni tekst,
+čelično plavi akcenat (`--steel`), široko pismo **Michroma** za znak i kratke oznake i **Inter** za naslove i tekst.
+Monogram `assets/logo-mark.svg` je ponovo nacrtan kao vektor. **Napomena:** na dostavljenom logotipu piše „POWEMORT“;
+na sajtu je korišćen ispravan naziv „POWER MONT 023“. Kada stigne ispravljen logo u vektoru (SVG/AI/PDF), može zameniti ovaj fajl.
 
 ## Fotografije
 

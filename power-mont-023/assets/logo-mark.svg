@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 32.5" role="img" aria-label="POWER MONT 023">
+  <defs>
+    <linearGradient id="pm-silver" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset="1" stop-color="#a7b0ba"/></linearGradient>
+    <linearGradient id="pm-steel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b3cde6"/><stop offset="1" stop-color="#5f86ad"/></linearGradient>
+  </defs>
+  <path fill="url(#pm-silver)" fill-rule="evenodd" d="M0 0H24A9 9 0 0 1 33 9A8 8 0 0 1 25 17H6V32.5H0ZM6 5.5V11.5H25A2.5 2.5 0 0 0 27.5 9A3.5 3.5 0 0 0 24 5.5Z"/>
+  <path fill="url(#pm-steel)" d="M12 17H19L26 21.5L46 7V32.5H40V19L26 29Z"/>
+</svg>

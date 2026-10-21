@@ -63,7 +63,7 @@ def hero(w=2000, h=2400):
     floor = y > 0.9
     lum = np.where(floor, 0.30 + 0.06 * lit, lum)
     lum -= 0.05 * np.exp(-np.abs(y - 0.9) * 140)
-    return tint(np.clip(lum, 0, 1), (38, 44, 52), (236, 238, 240))
+    return tint(np.clip(lum, 0, 1), (14, 17, 22), (176, 185, 196))
 
 
 def detail(w=1600, h=2000):
@@ -76,7 +76,7 @@ def detail(w=1600, h=2000):
     hgt = hgt * (1 - 0.8 * smooth) + noise(w, h, [(520, 1.6)]) * smooth
     lit = shade(hgt, (-1.0, -0.6, 0.45), 7.0)
     lum = 0.48 + 0.36 * lit - 0.08 * y + 0.04 * smooth
-    return tint(np.clip(lum, 0, 1), (40, 47, 56), (232, 235, 238))
+    return tint(np.clip(lum, 0, 1), (16, 20, 26), (168, 178, 190))
 
 
 def save(img, name, widths):
@@ -88,8 +88,17 @@ def save(img, name, widths):
     )
 
 
+def grain(size=128):
+    # suptilno zrno pozadine (kao papir na kom je logo), poluprovidno
+    g = rng.normal(0, 1, (size, size)).astype(np.float32)
+    a = np.clip(np.abs(g) * 6, 0, 16).astype(np.uint8)
+    v = np.where(g > 0, 255, 0).astype(np.uint8)
+    Image.fromarray(np.dstack([v, a]), "LA").save(OUT / "grain.png", optimize=True)
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     save(hero(), "hero", [640, 1000, 1400])
     save(detail(), "o-nama", [600, 900, 1200])
+    grain()
     print("OK:", sorted(p.name for p in OUT.iterdir()))
