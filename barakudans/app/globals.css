@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  PALETA (dizajn tokeni) – RGB trojke da Tailwind može da radi sa alfa vrednostima.
+  Izvedena iz "noćnog" osećaja: tinta-crna pozadina, električni tirkiz (barakuda / neon voda)
+  kao glavni akcent, topla zlatna za izabrano/premium, crvena isključivo za "zauzeto".
+*/
+:root {
+  --bg: 7 9 13;          /* #07090d  tinta crna */
+  --surface: 14 18 25;   /* #0e1219  kartice */
+  --raised: 21 27 37;    /* #151b25  povišene površine */
+  --fg: 238 243 247;     /* #eef3f7  tekst (kontrast na --bg ≈ 17:1) */
+  --muted: 138 150 166;  /* #8a96a6  sekundarni tekst (≈ 6.9:1 na --bg) */
+  --accent: 34 230 195;  /* #22e6c3  slobodno / primarno */
+  --gold: 244 199 107;   /* #f4c76b  izabrano */
+  --danger: 255 77 94;   /* #ff4d5e  zauzeto */
+}
+
+html { scroll-behavior: smooth; color-scheme: dark; }
+body { background: rgb(var(--bg)); color: rgb(var(--fg)); -webkit-tap-highlight-color: transparent; }
+::selection { background: rgb(var(--accent) / .3); }
+:focus-visible { outline: 2px solid rgb(var(--gold)); outline-offset: 3px; border-radius: 4px; }
+
+.section { @apply mx-auto w-full max-w-6xl px-4 sm:px-6 py-20 sm:py-28; }
+.eyebrow { @apply font-display text-xs uppercase tracking-[.3em] text-accent; }
+.h2 { @apply font-display text-3xl sm:text-5xl font-bold tracking-tight; }
+.btn { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 font-semibold transition duration-200 active:scale-[.98]; }
+.btn-primary { @apply btn bg-accent text-bg shadow-glow hover:brightness-110; }
+.btn-ghost { @apply btn border border-white/15 text-fg hover:border-accent/60 hover:text-accent; }
+.input { @apply min-h-12 w-full rounded-xl border border-white/10 bg-raised px-4 text-fg placeholder:text-muted/70 transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30; }
+.card { @apply rounded-2xl border border-white/[.07] bg-surface; }
+
+/* Suptilni neon "šum" iza hero sekcije */
+.glow-bg {
+  background:
+    radial-gradient(60% 50% at 20% 10%, rgb(var(--accent) / .18), transparent 70%),
+    radial-gradient(50% 45% at 85% 30%, rgb(var(--gold) / .10), transparent 70%),
+    radial-gradient(70% 60% at 50% 100%, rgb(60 40 160 / .22), transparent 70%);
+}
+
+/* ---- Plan stolova: animacije ---- */
+@keyframes free-pulse { 0%,100% { opacity: .15; transform: scale(1); } 50% { opacity: .55; transform: scale(1.12); } }
+@keyframes ring-spin { to { stroke-dashoffset: -60; } }
+@keyframes tick-draw { to { stroke-dashoffset: 0; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.t-pulse { transform-box: fill-box; transform-origin: center; animation: free-pulse 2.8s ease-in-out infinite; }
+.t-ring { animation: ring-spin 1.6s linear infinite; }
+.tick { stroke-dasharray: 60; stroke-dashoffset: 60; animation: tick-draw .7s .25s ease-out forwards; }
+.fade-up { animation: fade-up .5s ease-out both; }
+
+.table-node { cursor: pointer; outline: none; }
+.table-node .body { transition: fill .2s, stroke .2s, filter .2s; }
+.table-node:hover .body, .table-node:focus-visible .body { filter: brightness(1.3); }
+.table-node:focus-visible .focus-ring { opacity: 1; }
+.table-node[aria-disabled='true'] { cursor: not-allowed; }
+
+/* Poštovanje prefers-reduced-motion: gasi beskonačne i dekorativne animacije */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .t-pulse, .t-ring, .fade-up { animation: none !important; }
+  .t-pulse { opacity: .3; }
+  .tick { animation: none; stroke-dashoffset: 0; }
+  * { transition-duration: .01ms !important; }
+}
